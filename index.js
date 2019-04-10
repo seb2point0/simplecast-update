@@ -6,8 +6,8 @@ const Parser = require('rss-parser');
 const url = require('url');
 
 const settings = {
-  feed_url: 'https://feeds.simplecast.com/tAlbpTQY',
-  token: '_aPls6w5n6mbIJWfsPdzxzk2XV85ECVC9MuVHVDCTnPmcWED34jDwCS2he2wBYZCrKuZiv8TKW0ifze-HuQI4RpznH-VXILDiKEjakHJKqDuWIg1ufDAHs9MXM4JyNO_Sgz12aqqHM2giKnMM7QFCDcudZQzVZqhspXSP9td5PKlHUjfWxDrQohzHOabhz8IYhRF376yuZ9avYRg0KY8UxZKp6HNH3jiNKq9VS_Lqkq-O4Rc9ZaJmOekFRgE2dTyk8Qx8ktFOGFC15lzGgTTsFMh1VEndjfqAdpK2dSYJoixZ1IgVTc',
+  feed_url: 'https://feeds.simplecast.com/xxxxxx',
+  token: 'TOKEN iDnj0vz6vj TOKEN fiYDsb7J17 TOKEN',
   log_errors: null // set to true to see errors in console
 }
 
@@ -26,41 +26,48 @@ async function logError(errors) {
 async function updateItem(item) {
   return new Promise(resolve => {
 
-    const number = item.itunes.episode,
-          guid = url.parse(item.enclosure.url).pathname.split('/')[4];
+    if(item.itunes.episode) {
 
-    const request_data = {
-      url: 'https://api.simplecast.com/episodes/' + guid,
-      headers: {
-        'accept': '*/*',
-        'accept-encoding': 'gzip, deflate, br',
-        'accept-language': 'en-US,en;q=0.9',
-        'authorization': 'Bearer ' + settings.token,
-        'content-type': 'application/json;charset=UTF-8',
-        'origin': 'https://dashboard.simplecast.com',
-        'referer': 'https://dashboard.simplecast.com/episodes/' + guid +'/edit',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
-      },
-      body: JSON.stringify(
-        {
-          "id": guid,
-          "custom_url": "https://epicenter.tv/" + number,
-          "slug": number,
-          "status": "published"
-        } 
-      )
-    }
-    request.post(request_data, function(err, res) {
-      // console.log("###### updateItem ########################################");
-      console.log(number + " --- " + guid);
-      const response = res.body;
-      const errors = response.errors;
-      if(errors) {
-        logError(errors);
+      const number = String(item.itunes.episode).padStart(3,0),
+            guid = url.parse(item.enclosure.url).pathname.split('/')[4];
+
+      const request_data = {
+        url: 'https://api.simplecast.com/episodes/' + guid,
+        headers: {
+          'accept': '*/*',
+          'accept-encoding': 'gzip, deflate, br',
+          'accept-language': 'en-US,en;q=0.9',
+          'authorization': 'Bearer ' + settings.token,
+          'content-type': 'application/json;charset=UTF-8',
+          'origin': 'https://dashboard.simplecast.com',
+          'referer': 'https://dashboard.simplecast.com/episodes/' + guid +'/edit',
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+        },
+        body: JSON.stringify(
+          {
+            "id": guid,
+            "custom_url": "https://epicenter.tv/" + number,
+            "slug": number,
+            "status": "published"
+          } 
+        )
       }
-      console.log(response)      
-      resolve(response);
-    });
+
+      console.dir(item.link);
+
+      request.post(request_data, function(err, res) {
+        console.dir(item.title);
+        console.dir(request_data.body);
+        console.log('');
+        console.log('');
+        const response = res.body;
+        const errors = response.errors;
+        if(errors) {
+          logError(errors);
+        }
+        resolve(response);
+      });
+    }
   });
 }
 
