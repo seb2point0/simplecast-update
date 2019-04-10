@@ -5,9 +5,11 @@ const queryString = require('query-string');
 const Parser = require('rss-parser');
 const url = require('url');
 
+// Update these values
 const settings = {
   feed_url: 'https://feeds.simplecast.com/xxxxxx',
-  token: 'TOKEN iDnj0vz6vj TOKEN fiYDsb7J17 TOKEN',
+  token: 'TOKEN iDnj0vz6vj TOKEN fiYDsb7J17 TOKEN', // You can find the token by looking at requests made by the website wheen your update an episode on Simplecast.com
+  'website': 'https://domain.ext/"'
   log_errors: null // set to true to see errors in console
 }
 
@@ -46,7 +48,7 @@ async function updateItem(item) {
         body: JSON.stringify(
           {
             "id": guid,
-            "custom_url": "https://epicenter.tv/" + number,
+            "custom_url": website + number,
             "slug": number,
             "status": "published"
           } 
