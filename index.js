@@ -53,14 +53,13 @@ async function updateItem(item) {
     request.post(request_data, function(err, res) {
       // console.log("###### updateItem ########################################");
       console.log(number + " --- " + guid);
-      console.log(res)
-      // const response = JSON.parse(res.body);
-      // const errors = response.errors;
-      // if(errors) {
-      //   logError(errors);
-      // }
-      // console.log(response)      
-      // resolve(response);
+      const response = res.body;
+      const errors = response.errors;
+      if(errors) {
+        logError(errors);
+      }
+      console.log(response)      
+      resolve(response);
     });
   });
 }
@@ -74,18 +73,3 @@ let rss = new Parser();
     await updateItem(item)
   });
 })();
-
-
-// (async () => {
-//   // get token from Ghost Token API
-//   auth_token = await getAuthToken(auth.username, auth.password, auth.client_id, auth.client_secret);
-//   // read instagram export data file
-//   const instagram_objects = await readDataFile(settings.instagram_data_file);
-//   instagram_objects.forEach(async (instagram_object) => {
-//     // push images to server
-//     const image = await postImage(instagram_object);
-//     // create blog posts
-//     await postPost(image, instagram_object)
-//   });
-// })();
-
