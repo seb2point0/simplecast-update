@@ -9,7 +9,7 @@ const url = require('url');
 const settings = {
   feed_url: 'https://feeds.simplecast.com/xxxxxx', // your Simplecast feed url
   token: 'TOKEN iDnj0vz6vj TOKEN fiYDsb7J17 TOKEN', // You can find the token by looking at requests made by the website wheen your update an episode on Simplecast.com
-  'website': 'https://domain.ext/' // your base url. the episode number will immeditately follow the url (ex: https://domain.ext/032)
+  website: 'https://domain.ext/', // your base url. the episode number will immeditately follow the url (ex: https://domain.ext/032)
   log_errors: null // set to true to see errors in console
 }
 
@@ -48,7 +48,7 @@ async function updateItem(item) {
         body: JSON.stringify(
           {
             "id": guid,
-            "custom_url": website + number, // updates 'alternative url' or <link> tag (ex: http://domain.ext/044)
+            "custom_url": settings.website + number, // updates 'alternative url' or <link> tag (ex: http://domain.ext/044)
             "slug": number, // updates slug (ex: https://youpod.simplecast.com/episodes/281-8suWua8q)
             "status": "published"
           } 
